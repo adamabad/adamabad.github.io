@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <link rel="stylesheet" href="style.css" />
     <style>
 
         * {
@@ -330,9 +331,16 @@
     <table id="combatantTable">
 
     </table>
-    <progress id="progressBar" value="10000" max="10000"></progress>
-    <div class="progress">
-        <div class="progress-bar" id="progressBar" role="progressbar" style="width: 100%;" aria-valuenow="10000" aria-valuemin="0" aria-valuemax="10000"></div>
+    <div class="progress_container">
+        <div class="progress">
+            <div class="progress_item">
+                <h3 class="progress_title">HTML5</h3>
+                <div class="progress_bar">
+                    <div class="bar" data-value="96" data-text="96"></div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="script.js"></script>
     </body>
 </html>
