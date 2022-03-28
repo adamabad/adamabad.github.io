@@ -79,7 +79,7 @@
 
         var bossName = "";
         var maxHP = -1;
-        var currentBest = 10000;
+        var currentBest = 100;
 
         var headerDefine =
         [
@@ -155,18 +155,31 @@
             updateCombatantList(data);
         }
 
-        function ingestLine(data) {
-            switch(data){
-                case(data.line[0] == 37 && data.line[3] == bossName):
-                    var progress = document.getElementById('progressBar2');
-                    var value = data.line[5] / maxHP;
-                    console.log((value * 10000).toFixed(0) + "|" + data.line[5] + "|" + maxHP);
-                    $('.progress-bar').css('width', value/10000+'%').attr('aria-valuenow', value);
-                break;
-                case(data.line[0] == 38 && data.line[6] > 1000000):
-                    bossName = data.line[3].toString();        
-                    maxHP = data.line[6];
-                break;
+        function ingestLine(data) 
+        {
+            if(data.line[0] != 37 && data.line[0] != 38)
+                return;                  
+            if(data.line[0] == 37) 
+            {  
+                //console.log(data.line);
+                if(bossName == "" || data.line[3] != bossName)
+                    return;
+                var progress = document.getElementById('progressBar2');
+                var value = (data.line[5] / maxHP * 100).toFixed(2).toString();
+                if(value < currentBest)
+                    currentBest = value;
+                //console.log(value + "|" + data.line[5] + "|" + maxHP);
+                updateBar(value, currentBest);
+                //$('.progress-bar').css('width', value/10000+'%').attr('aria-valuenow', value);    
+            }
+            else
+            {
+                //console.log(data.line);
+                if(data.line[6] < 1000000)
+                    return;
+                bossName = data.line[3].toString();        
+                maxHP = data.line[6];
+                document.getElementById('bar-Header').innerHTML = bossName;
             }     
         }
 
@@ -334,9 +347,10 @@
     <div class="progress_container">
         <div class="progress">
             <div class="progress_item">
-                <h3 class="progress_title">HTML5</h3>
+                <h3 class="progress_title" id="bar-Header">N/A</h3>
                 <div class="progress_bar">
-                    <div class="bar" data-value="96" data-text="96"></div>
+                    <div class="bar" data-value="100" data-text="100"></div>
+                    <div class="bar-best" data-value="100" data-dext="100"></div>
                 </div>
             </div>
         </div>
