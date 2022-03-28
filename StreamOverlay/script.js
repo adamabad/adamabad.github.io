@@ -15,7 +15,6 @@ window.onload = function () {
   };
 
 function updateBar(value, currentBest) {
-    console.log(value);
     let bar = document.querySelectorAll('.bar');
     bar.forEach((progress) => {
         progress.style.width = `${value}%`
