@@ -70,9 +70,9 @@ body {
     background: #000000;
     position: absolute;
     transition: width 1.5s cubic-bezier(0.1, 0.42, .05, 1);
-    width: 2px;
+    width: 4px;
     height: 100%;
-    left: 100%;
+    left: calc(100% - 4px);
 }
 .bar-best::after {
     content: attr(data-text);
