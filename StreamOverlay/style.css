@@ -6,7 +6,9 @@
 }
 body {
   font-family: 'Montserrat', sans-serif;
+  /*
   background: #020218;
+  */
 }
 .progress_container {
   max-width: 2560px;
