@@ -5,3 +5,12 @@
 .split-time { /* time of last split */
     font-size: 15px;
 }
+
+.split_container {
+    max-width: 300px;
+    width: calc(25%);
+    height: 600px;
+    padding: 0 1rem;
+    margin: 0 auto;
+    align-self: left;
+  }

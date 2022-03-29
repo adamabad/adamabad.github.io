@@ -7,30 +7,33 @@
     <link rel="stylesheet" href="css/bossFrame.css" />
     <link rel="stylesheet" href="css/timerFrame.css" />
     <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script> 
     <script src="javascript/act.js"></script>
+    <script src="javascript/general.js"></script>
     </script>
 </head>
-<body>
-    <div class="progress_container">
-        <div class="progress">
-            <div class="progress_item">
-                <h3 class="progress_title" id="bar-Header" style="color:black;">N/A</h3>
-                <div class="progress_bar">
-                    <div class="bar" data-value="100" data-text="100"></div>
-                    <div class="bar-best" data-value="100" data-dext="100"></div>
+    <body>
+        <button onclick="locktoggle()">lock</button>
+        <div class="progress_container draggable-target">
+            <div class="progress">
+                <div class="progress_item">
+                    <h3 class="progress_title" id="bar-Header" style="color:black;">N/A</h3>
+                    <div class="progress_bar">
+                        <div class="bar" data-value="100" data-text="100%"></div>
+                        <div class="bar-best" data-value="100" data-dext="100"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="split_container" id="split">
-        <div id="display">
-            <div class="total-time">
-              00:00:00.000
+        <div class="split_container draggable-target" id="split">
+            <div id="display">
+                <div class="total-time">
+                00:00:00.000
+                </div>
             </div>
+            <div id="times" style="display: none;"></div>
         </div>
-        <div id="times" style="display: none;"></div>
-    </div>
-    <script src="javascript/bossFrame.js"></script>
-    <script src="javascript/timerFrame.js"></script>
+        <script src="javascript/bossFrame.js"></script>
+        <script src="javascript/timerFrame.js"></script>
     </body>
 </html>

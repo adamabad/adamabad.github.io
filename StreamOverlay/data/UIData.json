@@ -1,0 +1,16 @@
+{
+    "bossFrame" : {
+        "x" : 0,
+        "y" : 0,
+        "width" : 1000,
+        "height" : 100,
+        "active" : "true"
+    },
+    "timerFrame" : {
+        "x" : 0,
+        "y" : 0,
+        "width" : 1000,
+        "height" : 100,
+        "active" : "true"
+    }
+}
