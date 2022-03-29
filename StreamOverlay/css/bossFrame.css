@@ -10,6 +10,14 @@ body {
   background: #020218;
   */
 }
+.split_container {
+  max-width: 300px;
+  width: calc(25%);
+  height: 600px;
+  padding: 0 1rem;
+  margin: 0 auto;
+  align-self: left;
+}
 .progress_container {
   max-width: 2560px;
   width: calc(100%);

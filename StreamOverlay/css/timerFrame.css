@@ -1,0 +1,7 @@
+.total-time { /* total measured time */
+    font-size: 30px;
+}
+
+.split-time { /* time of last split */
+    font-size: 15px;
+}

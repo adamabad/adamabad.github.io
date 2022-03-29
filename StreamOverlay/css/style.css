@@ -1,0 +1,16 @@
+body, html {
+  margin: 0;
+  background-color:  transparent;
+}
+html {
+  height: 100%;
+  overflow: hidden;
+  background-color: transparent;
+
+}
+#display, #times {
+margin: 10px 0px;
+padding: 10px;
+border: 1px solid silver;
+font-family: monospace;
+}

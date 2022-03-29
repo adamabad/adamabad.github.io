@@ -3,169 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <link rel="stylesheet" href="style.css" />
-    <style>
-        body, html {
-            margin: 0;
-            background-color:  transparent;
-        }
-        html {
-            height: 100%;
-            overflow: hidden;
-            background-color: transparent;
-
-        }
-        #display, #times {
-      	margin: 10px 0px;
-    	padding: 10px;
-      	border: 1px solid silver;
-    	font-family: monospace;
-        }
-    
-        .total-time { /* total measured time */
-            font-size: 30px;
-        }
-        
-        .split-time { /* time of last split */
-            font-size: 15px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/bossFrame.css" />
+    <link rel="stylesheet" href="css/timerFrame.css" />
     <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
-    <script>
-
-        var bossName = "";
-        var maxHP = -1;
-        var currentBest = 100;
-        var timerActive = false;
-        var isDungeon = false;
-        var willSealed = /^.*  will be sealed off in 15 seconds!\.\|.*$/;
-        var noSealed = /^.*  is no longer sealed!\.\|.*$/;
-
-        addOverlayListener("LogLine", (e) => ingestLine(e));
-        addOverlayListener("CombatData", (e) => checkCombat(e));
-        startOverlayEvents();
-
-        function ingestLine(data) 
-        {
-            switch(data.line[0]) 
-            {
-                case "37":
-                    if(bossName == "" || data.line[3] != bossName)
-                    {
-                        return;
-                    }
-                    
-                    var progress = document.getElementById('progressBar2');
-                    var value = (data.line[5] / maxHP * 100).toFixed(2).toString();
-                    
-                    if(value < currentBest)
-                    {
-                        currentBest = value;
-                    }
-                    
-                    updateBar(value, currentBest);
-                    if(value == 0 && !isDungeon) 
-                    {
-                        stopStopwatch();
-                    }
-                    break;
-                case "38":
-                    if(data.line[6] < 1000000)
-                        return;
-                    bossName = data.line[3].toString();        
-                    maxHP = data.line[6];
-                    document.getElementById('bar-Header').innerHTML = bossName;
-                    break;
-                case "00":
-                    switch(true) 
-                    {
-                        case willSealed.test(data.line):
-                            splitTime();
-                            break;
-                        case noSealed.test(data.line):
-                            splitTime();
-                            break;
-                    }
-            }   
-        }
-
-        function checkCombat(data) 
-        {
-
-            if(data.isActive == "false") 
-            {
-                console.log('stop');
-                timerActive = false;
-                stopStopwatch();
-                return;
-            }
-            else if(!timerActive)
-            {
-                console.log('start');
-                timerActive = true;
-                startStopwatch();
-            }
-
-        }
-
-        function calculatePeriod(t1, t2) {
-            var dt = t2 - t1;
-
-            var units = [
-                {name: 'milliseconds', scale: 1000},
-                {name: 'seconds', scale: 60},
-                {name: 'minutes', scale: 60},
-                {name: 'hours', scale: 24}
-            ];
-
-            var result = { };
-
-            for(var i = 0; i < units.length; ++i) {
-                var unit = units[i];
-
-                var total = Math.floor(dt / unit.scale);
-                var rest = dt - total * unit.scale;
-
-                result[unit.name] = rest;
-
-                dt = total;
-            }
-
-            result.days = dt;
-
-            return result;
-        }
-
-        function padLeft(number, length, character) {
-            if(character == null)
-                character = '0';
-
-            var result = number.toString();
-
-            for(var i = result.length; i < length; ++i) {
-                result = character + result;
-            }
-
-            return result;
-        }
-        
-        function renderTime(t1, t2) {
-            var period = calculatePeriod(t1, t2);
-
-            var text = '';
-
-            if (period.days) {
-            text += padLeft(period.days, 2) + ' days ';
-            }
-
-            text += padLeft(period.hours, 2) + ':';
-            text += padLeft(period.minutes, 2) + ':';
-            text += padLeft(period.seconds, 2) + '.';
-            text += padLeft(period.milliseconds, 3);
-
-            return text;
-        }
+    <script src="javascript/act.js"></script>
     </script>
 </head>
 <body>
@@ -180,85 +22,15 @@
             </div>
         </div>
     </div>
-    <div id="display">
-        <div class="total-time">
-          00:00:00.000
+    <div class="split_container" id="split">
+        <div id="display">
+            <div class="total-time">
+              00:00:00.000
+            </div>
         </div>
+        <div id="times" style="display: none;"></div>
     </div>
-    <div id="times" style="display: none;"></div>
-    <script src="script.js"></script>
-    <script>
-        var interval = null; // interval id
-        var start = null; // start time
-        var split = null; // split time
-        
-        var display = document.getElementById('display');
-        var times = document.getElementById('times');
-
-        function startStopwatch() {
-            if(interval)
-                return;
-
-            start = new Date();
-        
-            if(split) {
-                times.style.display = 'none';
-                times.innerHTML = '';
-            
-                split = null;
-            }
-        
-            function tick() {
-                var now = new Date();
-                
-                if(split) {
-                    var html = '<div class="total-time">' 
-                        + renderTime(start, now) 
-                        + '</div>'
-                        + '<div class="split-time">' 
-                        + renderTime(split, now)
-                        + '</div>';
-                
-                    display.innerHTML = html;
-                } else {
-                    var html = '<div class="total-time">' 
-                        + renderTime(start, now) 
-                        + '</div>';
-                
-                    display.innerHTML = html;
-                }
-            }
-        
-            interval = setInterval(tick, 10);
-        }
-        
-        function stopStopwatch() {
-            if(interval) {
-                clearInterval(interval);
-
-                interval = null;
-            }
-        }
-        
-        function splitTime() {
-            if(interval) {
-                var now = new Date();
-
-                if (split == null) {
-                    times.innerHTML += '<div class="split-time">' 
-                        + renderTime(start, now)
-                        + '</div>';
-                
-                    times.style.display = 'block';
-                } else {
-                    times.innerHTML += '<div class="split-time">' 
-                        + renderTime(split, now)
-                        + '</div>';
-                }
-    
-                split = now;
-            }
-        }
-    </script>
+    <script src="javascript/bossFrame.js"></script>
+    <script src="javascript/timerFrame.js"></script>
     </body>
 </html>
