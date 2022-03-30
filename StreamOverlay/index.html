@@ -13,8 +13,12 @@
     </script>
 </head>
     <body>
-        <button onclick="locktoggle()">lock</button>
-        <div class="progress_container draggable-target">
+        <div id="buttons">
+            <button onclick="locktoggle()">lock</button><br>
+            <button onclick="toggleVisible('bossFrame')">BossFrame</button><br>
+            <button onclick="toggleVisible('split')">SplitFrame</button><br>
+        </div>
+        <div class="progress_container draggable-target" id="bossFrame">
             <div class="progress">
                 <div class="progress_item">
                     <h3 class="progress_title" id="bar-Header" style="color:black;">N/A</h3>
@@ -26,12 +30,61 @@
             </div>
         </div>
         <div class="split_container draggable-target" id="split">
-            <div id="display">
-                <div class="total-time">
-                00:00:00.000
+            <div class="split_background" id="split_background">
+                <div class="split_header" id="split_header">
+                    <div id="img_placer"></div>
+                    <div id="split_title">Final Fantasy XIV: Shadowbringers Paglthan</div>
+                    <div id="split_attmts">28</div>
+                </div>
+                <div class="split_splits" id="times" >
+                    <table class="split_table">
+                        <tr>
+                            <td class="split_img">IMG</td>
+                            <td class="split_title">Pack 1</td>
+                            <td class="split_delta" data-value="-3.3">-3.3</td>
+                            <td class="split_time">1:40</td>
+                        </tr>
+                        <tr>
+                            <td class="split_img">IMG</td>
+                            <td class="split_title">Amhuluk</td>
+                            <td class="split_delta" data-value="4.4">4.4</td>
+                            <td class="split_time">3:10</td>
+                        </tr>
+                        <tr>
+                            <td class="split_img">IMG</td>
+                            <td class="split_title">Packs 2 - 3</td>
+                            <td class="split_delta" data-value="-10">-10.0</td>
+                            <td class="split_time">4:53</td>
+                        </tr>
+                        <tr>
+                            <td class="split_img">IMG</td>
+                            <td class="split_title">Magitek Fortress</td>
+                            <td class="split_delta" data-value="-10">-10.0</td>
+                            <td class="split_time">6:45</td>
+                        </tr>
+                        <tr>
+                            <td class="split_img">IMG</td>
+                            <td class="split_title">Packs 4 - 5 </td>
+                            <td class="split_delta" data-value="-10">-10.0</td>
+                            <td class="split_time">8:56</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="final_container">
+                    <div id="final_split_img">IMG</div>
+                    <div id="final_split_title">Lunar Bahamut</div>
+                    <div id="final_split_delta"></div>
+                    <div id="final_split_time">11:01</div>
+                </div>
+                <div id="display">
+
+                    <div class="total-time">00:00:00.00</div>
+                </div>
+                <div class="previous_container" id="split_previous">
+                    <div id="previous_text" style="color:white;">Previous Segment</div>
+                    <div id="previous_time" style="text-align: right;">00:00:00</div>
                 </div>
             </div>
-            <div id="times" style="display: none;"></div>
         </div>
         <script src="javascript/bossFrame.js"></script>
         <script src="javascript/timerFrame.js"></script>

@@ -2,7 +2,7 @@ var bossName = "";
 var maxHP = -1;
 var currentBest = 100;
 var timerActive = false;
-var isDungeon = true;
+var isDungeon = false;
 var willSealed = /^.* will be sealed off in 15 seconds\!.*$/;
 var noSealed = /^.* is no longer sealed\!.*$/;
 var hasbegun = /^.* has begun\..*$/;
@@ -20,8 +20,6 @@ function ingestLine(data)
             {
                 return;
             }
-            
-            var progress = document.getElementById('progressBar2');
             var value = (data.line[5] / maxHP * 100).toFixed(2).toString();
             
             if(value < currentBest)

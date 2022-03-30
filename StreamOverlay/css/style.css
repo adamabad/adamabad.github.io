@@ -8,9 +8,3 @@ html {
   background-color: transparent;
 
 }
-#display, #times {
-margin: 10px 0px;
-padding: 10px;
-border: 1px solid silver;
-font-family: monospace;
-}
