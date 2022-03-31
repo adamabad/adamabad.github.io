@@ -2,6 +2,7 @@
 const position = { x: 0, y: 0 }
 var locked = true;
 
+
 interact('.draggable').draggable({
   listeners: {
     start (event) {
@@ -17,17 +18,6 @@ interact('.draggable').draggable({
   }
 })
 
-function toggleVisible(element) {
-  let e = document.getElementById(element);
-  if(e.hasAttribute("hidden"))
-  {
-    e.removeAttribute("hidden");
-  }
-  else
-  {
-    e.setAttribute("hidden", true);
-  }
-}
 function locktoggle() 
 {
   let toggleable = document.querySelectorAll('.draggable-target');

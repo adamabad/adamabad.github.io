@@ -2,13 +2,13 @@ var bossName = "";
 var maxHP = -1;
 var currentBest = 100;
 var timerActive = false;
-var isDungeon = false;
+var isDungeon = true;
 var willSealed = /^.* will be sealed off in 15 seconds\!.*$/;
 var noSealed = /^.* is no longer sealed\!.*$/;
 var hasbegun = /^.* has begun\..*$/;
 addOverlayListener("LogLine", (e) => ingestLine(e));
 addOverlayListener("CombatData", (e) => checkCombat(e));
-addOverlayListener("ChangeZone", (e) => loadZone(e));
+//addOverlayListener("ChangeZone", (e) => loadZone(e));
 startOverlayEvents();
 
 function ingestLine(data) 
@@ -41,7 +41,6 @@ function ingestLine(data)
             document.getElementById('bar-Header').innerHTML = bossName;
             break;
         case "00":
-            console.log(hasbegun.test(data.line));
             switch(true) 
             {
                 case willSealed.test(data.line):
@@ -51,7 +50,6 @@ function ingestLine(data)
                     splitTime();
                     break;
                 case hasbegun.test(data.line):
-                    console.log('begin.');
                     if(isDungeon) 
                     {
                         startStopwatch();
@@ -66,21 +64,14 @@ function checkCombat(data)
 
     if(data.isActive == "false") 
     {
-        console.log('stop');
         timerActive = false;
         stopStopwatch();
         return;
     }
     else if(!timerActive)
     {
-        console.log('start');
         timerActive = true;
         startStopwatch();
     }
-
-}
-
-function loadZone(data)
-{
 
 }
