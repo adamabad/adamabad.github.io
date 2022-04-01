@@ -56,10 +56,11 @@
     background: transparent;
 }
 
+.gold-split {color: gold}
+.bright-green-split {color: green}
+.light-green-split {color: lightgreen}
+.light-red-split {color: lightcoral}
 .red-split {color:red}
-.orange-split {color: orange}
-.green-split {color: green}
-.gold-split {color: yellow}
 
 .previous_container {
     position: absolute;
@@ -134,6 +135,9 @@
     padding: 5px;
 }
 
+#previous_time {
+    text-align: right;
+}
 #img_placer, #split_attmts {
     float: left;
     width: 15%;
