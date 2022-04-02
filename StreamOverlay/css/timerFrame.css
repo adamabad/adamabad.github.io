@@ -27,10 +27,6 @@
     min-width: 250px;
     height: 400px;
     min-height: 300px;
-    padding: 0;
-    margin: 0 auto;
-    touch-action: none;
-    box-sizing: border-box;
 }
 
 .split_background {
@@ -170,7 +166,7 @@
     
 }
 
-#split_title {
+#split_header_title {
     float: left;
     width: 70%;
     height: 100%;

@@ -15,12 +15,12 @@
     <body>
         <div id="buttons">
             <button onclick="locktoggle()">lock</button><br>
-            <button onclick="toggleVisible('bossFrame')">BossFrame</button><br>
+            <button onclick="toggleVisible('bossFrame')" style="display: none;">BossFrame</button><br>
             <button onclick="toggleVisible('split')">SplitFrame</button><br>
             <button onclick="startStopwatch()">startStopwatch</button><br>
             <button onclick="splitTime()">splitTime</button><br>
         </div>
-        <div class="progress_container draggable-target" id="bossFrame">
+        <div class="progress_container draggable-target" style="display: none;" id="bossFrame">
             <div class="progress">
                 <div class="progress_item">
                     <h3 class="progress_title" id="bar-Header" style="color:black;">N/A</h3>
@@ -35,7 +35,7 @@
             <div class="split_background" id="split_background">
                 <div class="split_header" id="split_header">
                     <div id="img_placer"></div>
-                    <div id="split_title">Final Fantasy XIV: Shadowbringers Paglthan</div>
+                    <div id="split_header_title">Final Fantasy XIV: Shadowbringers Paglthan</div>
                     <div id="split_attmts">28</div>
                 </div>
                 <div class="split_splits" id="times" ></div>
@@ -57,5 +57,7 @@
         </div>
         <script src="javascript/bossFrame.js"></script>
         <script src="javascript/timerFrame.js"></script>
+        <script>
+        </script>
     </body>
 </html>

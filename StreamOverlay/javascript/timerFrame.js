@@ -6,17 +6,22 @@ var cursplit = 0;
 var display = document.getElementById('display');
 var times = document.getElementById('times');
 var table = document.getElementById('times');
+var split_header_title = document.getElementById('split_header_title');
+var split_attmts = document.getElementById('split_attmts');
 var previous_split_timer = document.getElementById('previous_time');
 var final_split_img = document.getElementById('final_split_img');
 var final_split_title = document.getElementById('final_split_title');
 var final_split_delta = document.getElementById('final_split_delta');
 var final_split_time =  document.getElementById('final_split_time');
+
 var split_delta;
 var split_timer;
 var run_delta = null;
 var delta_time;
 var pb;
+var L;
 
+var DAT_type, DAT_pulls, DAT_splits, DAT_name;
 /*
     0 - img
     1 - split title
@@ -34,40 +39,62 @@ var dungeon_splits = [
     ["", "Pack 4 - 5", "", 50000, null, null],
     ["", "Boss 3", "", 60000, null, null]
 ]
-var split_List = dungeon_splits;
-var L = split_List.length;
+var split_List;
 
 window.onload = () => {
-    for(x = 0; x < (L - 1); x++) {
-        let element = split_List[x];
-        let text = ""
-        text += `<div class="table_row">`;
-        if(element[0] != "") {
-            text += ` <div class="split_img"><img src=${element[0]}/></div>`;
-        }
-        text += ` <div class="split_title">${element[1]}</div>`
-        + ` <div class="split_time" id="id${x}">${toTime(element[3])}</div>`
-        + ` <div class="split_delta" id="d${x}" data-value="">${element[2]}</div>`
-        + `</div>`;
-        
-        table.innerHTML += text;
-    }
-    final_split_img.setAttribute('src', split_List[L - 1][0]);
-    final_split_title.innerHTML = split_List[L - 1][1];
-    final_split_delta.innerHTML = split_List[L - 1][2];
-    final_split_time.innerHTML = toTime(split_List[L - 1][3]);
+    fetch("../data/splits.json").then(response => 
+        response.json()).then(data => {
+            split_List = data;
+            
+            DAT_name = split_List["DAT"]["Name"];
+            DAT_pulls = split_List["DAT"]["Pulls"];
+            DAT_splits = split_List["DAT"]["Splits"];
+            DAT_type =  split_List["DAT"]["Type"];
+            L = DAT_splits;
+            split_header_title.innerHTML = DAT_name;
+            split_attmts.innerHTML = DAT_pulls;
+           
+            for(x = 0; x < (L - 1); x++) {
+                let element = split_List[x];
+                let text = ""
+                text += `<div class="table_row">`;
+                if(element["img"] != "") {
+                    text += ` <div class="split_img"><img src=${element["img"]}/></div>`;
+                }
+                text += ` <div class="split_title">${element["Split Name"]}</div>`
+                if(element["PB Run"] == null) {
+                    text += ` <div class="split_time" id="id${x}">-</div>`
+                }
+                else {
+                    text += ` <div class="split_time" id="id${x}">${toTime(element["PB Run"])}</div>`
+                }
+                text += ` <div class="split_delta" id="d${x}" data-value=""></div></div>`;
+                table.innerHTML += text;
+            }
+            final_split_img.setAttribute('src', split_List[L - 1]["img"]);
+            final_split_title.innerHTML = split_List[L - 1]["Split Name"];
+            final_split_delta.innerHTML = split_List[L - 1]["Delta"];
+            final_split_time.innerHTML = toTime(split_List[L - 1]["PB Run"]);
+        });
 };
 
 function cleanUI() {
     var oldSplitTime = document.getElementsByClassName("split_time");
     var oldSplitDelta = document.getElementsByClassName("split_delta")
     for(var x = 0; x < oldSplitTime.length; x++) {
-        oldSplitTime[x].innerHTML = toTime(split_List[x][3]);
+        if(split_List[x]["PB Run"] != null) {
+            oldSplitTime[x].innerHTML = toTime(split_List[x]["PB Run"]); 
+        }
+        else {
+            oldSplitTime[x].innerHTML = "-"
+        }
         oldSplitDelta[x].innerHTML = "";
         oldSplitTime[x].style = oldSplitDelta[x].style = "";
     }
-    document.getElementById('final_split_delta').innerHTML = split_List[L - 1][2];
-    document.getElementById('final_split_time').innerHTML = toTime(split_List[L - 1][3]);
+    final_split_delta.innerHTML = split_List[L - 1]["Delta"];
+    final_split_time.innerHTML = toTime(split_List[L - 1]["PB Run"]);
+    split_attmts.innerHTML = DAT_pulls;
+
     previous_time.innerHTML = "-"
     previous_time.style = "";
 }
@@ -82,10 +109,10 @@ function startStopwatch() {
     run_delta = null;
     start = new Date();
     split = start;
-    pb = split_List[cursplit][3];
+    pb = split_List[cursplit]["PB Run"];
     function tick() {
         var now = new Date();
-        delta_time = (now - start) -  split_List[cursplit][3];
+        delta_time = (now - start) -  split_List[cursplit]["PB Run"];
         delta = (now - start) - pb;
         if(run_delta == null && delta_time > -10000) {
             split_delta.innerHTML = renderDeltaTime(delta_time);
@@ -124,7 +151,8 @@ function splitTime() {
         colorGen(split_delta);
         previous_time.innerHTML = renderDeltaTime(delta_time - run_delta);
         colorGenSimple(previous_time);
-        split_List[cursplit][4] = (now - start);
+        split_List[cursplit]["Current Run"] = (now - start);
+        split_List[cursplit]["Delta"] = delta_time;
         if(cursplit == L - 1) {
             endSplit()
             return;
@@ -133,7 +161,7 @@ function splitTime() {
 
         cursplit++;
         run_delta = delta_time;
-        pb = pb + split_List[cursplit][3];
+        pb = pb + split_List[cursplit]["PB Run"];
         
         if(cursplit != L - 1) {
             split_delta = document.getElementById(`d${cursplit}`);
@@ -151,14 +179,21 @@ function splitTime() {
 
 function endSplit() {
     stopStopwatch();
-    if(split_List[cursplit][4] < split_List[cursplit][3]) {
-        for(var x = 0; x < split_List.length; x++) { 
-            split_List[x][3] = split_List[x][4];
+    if(split_List[cursplit]["Current Run"] < split_List[cursplit]["PB_Run"] || split_List[cursplit]["PB Run"] == null) {
+        for(var x = 0; x < L; x++) { 
+            split_List[x]["PB Run"] = split_List[x]["Current Run"];
         }
     }
+    split_List["DAT"]["Pulls"]++;
+    DAT_pulls = split_List["DAT"]["Pulls"];
+
+    console.log(split_List);
 }
 
 function colorGenSimple(e) {
+    if(split_List[cursplit]["PB Run"] == null) {
+        return;
+    }
     if((delta_time - run_delta) <= 0) {
         e.setAttribute('style', 'color:#29CC54');
     }
@@ -168,6 +203,9 @@ function colorGenSimple(e) {
 }
 
 function colorGen(e) {
+    if(split_List[cursplit]["PB Run"] == null) {
+        return;
+    }
     if(delta_time < 0) {
         if(delta_time > run_delta) {
             e.setAttribute('style', 'color:#70CC89');
@@ -275,7 +313,7 @@ function renderDeltaTime(t) {
     else {
         var text = ""
     }
-    var seconds = t / 1000;
+    var seconds = parseInt(t / 1000);
     var hours = parseInt(seconds / 3600);
     var minutes = parseInt(seconds/ 60);
     seconds = parseInt(seconds % 60);
