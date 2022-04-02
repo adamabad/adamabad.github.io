@@ -18,6 +18,15 @@ interact('.draggable').draggable({
   }
 })
 
+function toggleVisible(e) {
+  var x = document.getElementById(e);
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
 function locktoggle() 
 {
   let toggleable = document.querySelectorAll('.draggable-target');

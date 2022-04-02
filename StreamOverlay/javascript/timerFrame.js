@@ -7,25 +7,37 @@ var display = document.getElementById('display');
 var times = document.getElementById('times');
 var table = document.getElementById('times');
 var previous_split_timer = document.getElementById('previous_time');
+var final_split_img = document.getElementById('final_split_img');
+var final_split_title = document.getElementById('final_split_title');
+var final_split_delta = document.getElementById('final_split_delta');
+var final_split_time =  document.getElementById('final_split_time');
 var split_delta;
 var split_timer;
 var run_delta = null;
 var delta_time;
 var pb;
 
+/*
+    0 - img
+    1 - split title
+    2 - delta
+    3 - pb run split
+    4 - current run split
+    5 - best split
+*/
+
 var dungeon_splits = [
-    ["", "Pack 1", "", 10000], 
-    ["", "Boss 1", "", 19000], 
-    ["", "Pack 2 - 3", "", 29400], 
-    ["", "Boss 2", "", 40500],
-    ["", "Pack 4 - 5", "", 53600],
-    ["", "Boss 3", "", 66100]
+    ["", "Pack 1", "", 10000, null, null], 
+    ["", "Boss 1", "", 20000, null, null], 
+    ["", "Pack 2 - 3", "", 30000, null, null], 
+    ["", "Boss 2", "", 40000, null, null],
+    ["", "Pack 4 - 5", "", 50000, null, null],
+    ["", "Boss 3", "", 60000, null, null]
 ]
 var split_List = dungeon_splits;
 var L = split_List.length;
 
 window.onload = () => {
-    
     for(x = 0; x < (L - 1); x++) {
         let element = split_List[x];
         let text = ""
@@ -40,18 +52,24 @@ window.onload = () => {
         
         table.innerHTML += text;
     }
-    document.getElementById('final_split_img').setAttribute('src', split_List[L - 1][0]);
-    document.getElementById('final_split_title').innerHTML = split_List[L - 1][1];
-    document.getElementById('final_split_delta').innerHTML = split_List[L - 1][2];
-    document.getElementById('final_split_time').innerHTML = toTime(split_List[L - 1][3]);
+    final_split_img.setAttribute('src', split_List[L - 1][0]);
+    final_split_title.innerHTML = split_List[L - 1][1];
+    final_split_delta.innerHTML = split_List[L - 1][2];
+    final_split_time.innerHTML = toTime(split_List[L - 1][3]);
 };
 
 function cleanUI() {
-    var elements = document.getElementsByClassName("split_delta");
-    for(var x = 0; x < elements.length; x++) {
-        elements[x].innerHTML = "";
-        elements[x].style = "";
+    var oldSplitTime = document.getElementsByClassName("split_time");
+    var oldSplitDelta = document.getElementsByClassName("split_delta")
+    for(var x = 0; x < oldSplitTime.length; x++) {
+        oldSplitTime[x].innerHTML = toTime(split_List[x][3]);
+        oldSplitDelta[x].innerHTML = "";
+        oldSplitTime[x].style = oldSplitDelta[x].style = "";
     }
+    document.getElementById('final_split_delta').innerHTML = split_List[L - 1][2];
+    document.getElementById('final_split_time').innerHTML = toTime(split_List[L - 1][3]);
+    previous_time.innerHTML = "-"
+    previous_time.style = "";
 }
 
 function startStopwatch() {
@@ -60,7 +78,8 @@ function startStopwatch() {
 
     if(interval)
         return;
-
+    
+    run_delta = null;
     start = new Date();
     split = start;
     pb = split_List[cursplit][3];
@@ -105,9 +124,9 @@ function splitTime() {
         colorGen(split_delta);
         previous_time.innerHTML = renderDeltaTime(delta_time - run_delta);
         colorGenSimple(previous_time);
-
+        split_List[cursplit][4] = (now - start);
         if(cursplit == L - 1) {
-            stopStopwatch();
+            endSplit()
             return;
         }
         
@@ -122,11 +141,20 @@ function splitTime() {
         }
         else
         {
-            split_delta = document.getElementById(`final_split_delta`)
-            split_timer = document.getElementById(`final_split_time`)           
+            split_delta = final_split_delta;
+            split_timer = final_split_time;          
         }
 
         split = now;
+    }
+}
+
+function endSplit() {
+    stopStopwatch();
+    if(split_List[cursplit][4] < split_List[cursplit][3]) {
+        for(var x = 0; x < split_List.length; x++) { 
+            split_List[x][3] = split_List[x][4];
+        }
     }
 }
 
@@ -207,18 +235,18 @@ function renderTime(t1, t2) {
         text += period.hours + ':'
         text += padLeft(period.minutes, 2) + ':';
         text += padLeft(period.seconds, 2) + '.';
-        text += padLeft(Math.round(period.milliseconds / 10), 2);
+        text += padLeft(Math.floor(period.milliseconds / 10), 2);
         return text;
     }
     if (period.minutes) {
         text += period.minutes + ':';
         text += padLeft(period.seconds, 2) + '.';
-        text += padLeft(Math.round(period.milliseconds / 10), 2);
+        text += padLeft(Math.floor(period.milliseconds / 10), 2);
         return text;
     }   
 
     text += period.seconds + '.';
-    text += padLeft(Math.round(period.milliseconds / 10), 2);
+    text += padLeft(Math.floor(period.milliseconds / 10), 2);
     return text;
 }
 

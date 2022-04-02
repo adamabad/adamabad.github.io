@@ -1,0 +1,56 @@
+{
+    "DAT": {
+        "Type": "Dungeon",
+        "Splits": 6,
+        "Name": "Default",
+        "Pulls": 0
+    },
+    "0": {
+        "img":"",
+        "Split Name": "Pack 1 - 2",
+        "Delta": "",
+        "PB Run": null,
+        "Current Run": 0,
+        "Best run": null
+    },
+    "1": {
+        "img":"",
+        "Split Name": "Boss 1",
+        "Delta": "",
+        "PB Run": null,
+        "Current Run": 0,
+        "Best run": null
+    },
+    "2": {
+        "img":"",
+        "Split Name": "Pack 2 - 3",
+        "Delta": "",
+        "PB Run": null,
+        "Current Run": 0,
+        "Best run": null
+    },
+    "3": {
+        "img":"",
+        "Split Name": "Boss 2",
+        "Delta": "",
+        "PB Run": null,
+        "Current Run": 0,
+        "Best run": null
+    },
+    "4": {
+        "img":"",
+        "Split Name": "Pack 4 - 5",
+        "Delta": "",
+        "PB Run": null,
+        "Current Run": 0,
+        "Best run": null
+    },
+    "5": {
+        "img":"",
+        "Split Name": "Boss 3",
+        "Delta": "",
+        "PB Run": null,
+        "Current Run": 0,
+        "Best run": null
+    }
+}
