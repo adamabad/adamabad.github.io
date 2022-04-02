@@ -28,12 +28,17 @@ window.onload = () => {
     
     for(x = 0; x < (L - 1); x++) {
         let element = split_List[x];
-        table.innerHTML += `<div class="table_row">`
-        + ` <div class="split_img"><img src=${element[0]}></img></div>`
-        + ` <div class="split_title">${element[1]}</div>`
-        + ` <div class="split_delta" id="d${x}" data-value="">${element[2]}</div>`
+        let text = ""
+        text += `<div class="table_row">`;
+        if(element[0] != "") {
+            text += ` <div class="split_img"><img src=${element[0]}/></div>`;
+        }
+        text += ` <div class="split_title">${element[1]}</div>`
         + ` <div class="split_time" id="id${x}">${toTime(element[3])}</div>`
-        + `</div>` 
+        + ` <div class="split_delta" id="d${x}" data-value="">${element[2]}</div>`
+        + `</div>`;
+        
+        table.innerHTML += text;
     }
     document.getElementById('final_split_img').setAttribute('src', split_List[L - 1][0]);
     document.getElementById('final_split_title').innerHTML = split_List[L - 1][1];
@@ -65,12 +70,7 @@ function startStopwatch() {
         delta = (now - start) - pb;
         if(run_delta == null && delta_time > -10000) {
             split_delta.innerHTML = renderDeltaTime(delta_time);
-            if(delta_time < 0) {
-                split_delta.setAttribute('style', 'color:green');
-            }
-            else {
-                split_delta.setAttribute('style', 'color:red');
-            }
+            colorGenSimple(split_delta);
         }
         else if(delta_time > -10000 || delta_time > run_delta) {
             split_delta.innerHTML = renderDeltaTime(delta_time);
@@ -102,15 +102,16 @@ function splitTime() {
         var local_splittime = renderSplitTime(start, now);
         split_timer.innerHTML = local_splittime;
         split_delta.innerHTML = renderDeltaTime(delta_time);
-        
         colorGen(split_delta);
-        colorGen(previous_time);
+        previous_time.innerHTML = renderDeltaTime(delta_time - run_delta);
+        colorGenSimple(previous_time);
 
         if(cursplit == L - 1) {
             stopStopwatch();
             return;
         }
-        previous_time.innerHTML = renderDeltaTime((now - split) - (split_List[cursplit + 1][3] - split_List[cursplit][3]));
+        
+
         cursplit++;
         run_delta = delta_time;
         pb = pb + split_List[cursplit][3];
@@ -129,21 +130,30 @@ function splitTime() {
     }
 }
 
+function colorGenSimple(e) {
+    if((delta_time - run_delta) <= 0) {
+        e.setAttribute('style', 'color:#29CC54');
+    }
+    else {
+        e.setAttribute('style', 'color:#CC3729');
+    }
+}
+
 function colorGen(e) {
     if(delta_time < 0) {
         if(delta_time > run_delta) {
-            e.setAttribute('style', 'color:lightgreen');
+            e.setAttribute('style', 'color:#70CC89');
         }
         else {
-            e.setAttribute('style', 'color:green');
+            e.setAttribute('style', 'color:#29CC54');
         }
     }
     else {
         if(delta_time < run_delta) {
-            e.setAttribute('style', 'color:lightcoral');
+            e.setAttribute('style', 'color:#CC7870');
         }
         else {
-            e.setAttribute('style', 'color:red');
+            e.setAttribute('style', 'color:#CC3729');
         }
     }
 }
