@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/bossFrame.css" />
     <link rel="stylesheet" href="css/timerFrame.css" />
+    <link rel="stylesheet" href="css/rightclick.css" />
     <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script> 
     <script src="javascript/act.js"></script>
@@ -13,7 +14,7 @@
     </script>
 </head>
     <body>
-        <div id="buttons">
+        <div id="buttons" style="display: none;">
             <button onclick="locktoggle()">lock</button><br>
             <button onclick="toggleVisible('bossFrame')" style="display: none;">BossFrame</button><br>
             <button onclick="toggleVisible('split')">SplitFrame</button><br>
@@ -55,8 +56,17 @@
                 </div>
             </div>
         </div>
+        <div id="contextMenu" class="context-menu" style="display: none;">
+            <ul>    
+                <li onclick="processStart()">Start</li>
+                <li onclick="processSplit()">Split</li>
+                <li onclick="processReset()">Reset</li>
+                <li onclick="processStop()">Stop</li>
+            </ul>
+        </div>
         <script src="javascript/bossFrame.js"></script>
         <script src="javascript/timerFrame.js"></script>
+        <script src="javascript/rightclick.js"></script>
         <script>
         </script>
     </body>

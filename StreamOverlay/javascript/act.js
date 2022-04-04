@@ -8,7 +8,7 @@ var noSealed = /^.* is no longer sealed\!.*$/;
 var hasbegun = /^.* has begun\..*$/;
 addOverlayListener("LogLine", (e) => ingestLine(e));
 addOverlayListener("CombatData", (e) => checkCombat(e));
-//addOverlayListener("ChangeZone", (e) => loadZone(e));
+addOverlayListener("ChangeZone", (e) => loadZone(e));
 startOverlayEvents();
 
 function ingestLine(data) 
@@ -57,6 +57,10 @@ function ingestLine(data)
                     break;
             }
     }   
+}
+
+function loadZone(e) {
+    console.log(e.zoneID);
 }
 
 function checkCombat(data) 
